@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ShelterRain</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f7f8f0;color:#3b3d1e;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+nav{position:fixed;inset:0 0 auto;z-index:9;display:flex;align-items:center;justify-content:space-between;padding:16px 28px;background:rgba(247,248,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid #e8edcf}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem}.logo b{color:#f4601c}
+nav ul{display:flex;gap:28px;list-style:none;font-size:.9rem;color:#6b7a34}
+nav ul a:hover{color:#3b3d1e}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.ham i{display:block;width:22px;height:2px;background:#3b3d1e;border-radius:2px}
+#mob{display:none;position:fixed;top:60px;inset-inline:0;z-index:8;background:#fff;padding:20px 28px;flex-direction:column;gap:18px;border-bottom:1px solid #e8edcf;font-weight:500}
+#mob.open{display:flex}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 20px 60px;background:#eef3f8 repeating-linear-gradient(100deg,transparent 0 18px,rgba(74,120,160,.07) 18px 19px)}
+.tag{background:#e8edcf;color:#4a5224;font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:99px;margin-bottom:24px;display:inline-block}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.1;max-width:620px}
+h1 b{color:#f4601c;font-weight:800}
+.sub{margin-top:16px;max-width:420px;font-size:1rem;line-height:1.6;color:#6b7a34;font-weight:300}
+.btn{margin-top:32px;display:inline-block;background:#f4601c;color:#fff;font-family:'Syne',sans-serif;font-weight:600;padding:13px 30px;border-radius:10px;box-shadow:0 6px 20px rgba(244,96,28,.28);transition:.2s}
+.btn:hover{background:#ff7a3d;transform:translateY(-2px)}
+section{padding:64px 20px}
+section:nth-child(even){background:#fff}
+.sl{text-align:center;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#a3b060;margin-bottom:8px}
+h2{text-align:center;font-family:'Syne',sans-serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;margin-bottom:8px}
+.sd{text-align:center;color:#6b7a34;font-size:.92rem;max-width:380px;margin:0 auto 32px;line-height:1.6}
+.map{max-width:800px;margin:0 auto;height:320px;border-radius:18px;overflow:hidden;position:relative;background:#dde8c0;box-shadow:0 8px 36px rgba(59,61,30,.1)}
+.map::before{content:'';position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px) 0 0/36px 36px,linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px) 0 0/36px 36px}
+.st{position:absolute;background:rgba(255,255,255,.7)}
+.bl{position:absolute;background:rgba(59,61,30,.1);border-radius:3px}
+.pin{position:absolute;display:flex;flex-direction:column;align-items:center}
+.pd{width:32px;height:32px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.15);font-size:13px}
+.pd span{transform:rotate(45deg)}
+.pl{margin-top:4px;background:#fff;color:#3b3d1e;font-size:.66rem;font-weight:600;padding:2px 6px;border-radius:5px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.you{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:13px;height:13px;background:#f4601c;border-radius:50%;border:3px solid #fff;animation:p 2s ease-in-out infinite;box-shadow:0 0 0 6px rgba(244,96,28,.2)}
+@keyframes p{50%{box-shadow:0 0 0 12px rgba(244,96,28,.04)}}
+.badge{position:absolute;bottom:12px;right:12px;background:#fff;border-radius:8px;padding:7px 12px;font-size:.74rem;font-weight:500;box-shadow:0 4px 14px rgba(0,0,0,.07)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;max-width:840px;margin:0 auto}
+.card{background:#fff;border-radius:14px;padding:26px 22px;border:1px solid #e8edcf;transition:.2s;overflow:hidden;position:relative}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f4601c,transparent);opacity:0;transition:.3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(59,61,30,.08)}.card:hover::after{opacity:1}
+.card span{font-size:1.7rem;display:block;margin-bottom:12px}
+.card h3{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:700;margin-bottom:7px}
+.card p{font-size:.85rem;line-height:1.6;color:#6b7a34}
+footer{background:#3b3d1e;color:#e8edcf;padding:44px 28px 22px}
+.ft{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;margin-bottom:28px}
+.fl{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:#fff}.fl b{color:#ff7a3d}
+.ft p{margin-top:8px;font-size:.85rem;color:#a3b060;max-width:210px;line-height:1.6}
+.sc{display:flex;gap:9px;margin-top:12px}
+.sc a{width:34px;height:34px;background:rgba(255,255,255,.08);border-radius:7px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.sc a:hover{background:#f4601c;transform:translateY(-2px)}
+.fc h4{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#a3b060;margin-bottom:12px}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.fc a{font-size:.84rem;color:#e8edcf;transition:.2s}.fc a:hover{color:#ff7a3d}
+.fb{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;font-size:.79rem;color:#6b7a34}
+.fb a{color:#ff7a3d}
+@media(max-width:640px){nav ul,.nav-links{display:none}.ham{display:flex}.map{height:240px}section{padding:48px 16px}footer{padding:36px 16px 18px}.ft{flex-direction:column}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="logo">Shelter<b>Rain</b></a>
+  <ul><li><a href="#mapa">Mapa</a></li><li><a href="#beneficios">Beneficios</a></li><li><a href="#contacto">Contacto</a></li></ul>
+  <button class="ham" id="ham"><i></i><i></i><i></i></button>
+</nav>
+<div id="mob">
+  <a href="#mapa" onclick="mob.classList.remove('open')">Mapa</a>
+  <a href="#beneficios" onclick="mob.classList.remove('open')">Beneficios</a>
+  <a href="#contacto" onclick="mob.classList.remove('open')">Contacto</a>
+</div>
+
+<section class="hero">
+  <div class="tag">📍 Tu refugio más cercano</div>
+  <h1>No dejes que la <b>lluvia</b><br>te detenga</h1>
+  <p class="sub">ShelterRain encuentra cafés, museos y plazas para refugiarte al instante, sin importar dónde estés.</p>
+  <a href="#mapa" class="btn">🔍 Buscar Refugio</a>
+</section>
+
+<section id="mapa">
+  <p class="sl">Tu ubicación</p><h2>Refugios cerca de ti</h2>
+  <p class="sd">Ve en tiempo real los lugares disponibles a tu alrededor.</p>
+  <div class="map">
+    <div class="st" style="left:0;right:0;height:10px;top:34%"></div>
+    <div class="st" style="left:0;right:0;height:10px;top:61%"></div>
+    <div class="st" style="top:0;bottom:0;width:10px;left:27%"></div>
+    <div class="st" style="top:0;bottom:0;width:10px;left:57%"></div>
+    <div class="bl" style="top:8%;left:4%;width:20%;height:23%"></div>
+    <div class="bl" style="top:8%;left:29%;width:24%;height:23%"></div>
+    <div class="bl" style="top:8%;left:61%;width:29%;height:23%"></div>
+    <div class="bl" style="top:39%;left:4%;width:20%;height:19%"></div>
+    <div class="bl" style="top:39%;left:61%;width:13%;height:19%"></div>
+    <div class="bl" style="top:66%;left:4%;width:27%;height:28%"></div>
+    <div class="bl" style="top:66%;left:61%;width:29%;height:28%"></div>
+    <div class="pin" style="top:9%;left:5%"><div class="pd" style="background:#f4601c"><span>☕</span></div><div class="pl">Café Central</div></div>
+    <div class="pin" style="top:7%;left:59%"><div class="pd" style="background:#4a5224"><span>🏛</span></div><div class="pl">Museo Arte</div></div>
+    <div class="pin" style="top:62%;left:36%"><div class="pd" style="background:#2a7d5c"><span>🌿</span></div><div class="pl">Plaza Norte</div></div>
+    <div class="pin" style="top:39%;left:76%"><div class="pd" style="background:#f4601c"><span>☕</span></div><div class="pl">Bean & Co.</div></div>
+    <div class="you"></div>
+    <div class="badge">🌧 4 refugios encontrados</div>
+  </div>
+</section>
+
+<section id="beneficios">
+  <p class="sl">Por qué usarla</p><h2>Simple, rápido y útil</h2>
+  <p class="sd">Tres razones por las que ShelterRain es indispensable en días de lluvia.</p>
+  <div class="cards">
+    <div class="card"><span>🏃‍♂️</span><h3>Encuentra techo rápido</h3><p>Un solo toque para el lugar cubierto más cercano. Sin registro, sin perder tiempo.</p></div>
+    <div class="card"><span>☕</span><h3>Filtra por Wi-Fi o Café</h3><p>¿Necesitas trabajar? Filtra solo lugares con Wi-Fi gratuito o cafés acogedores.</p></div>
+    <div class="card"><span>📡</span><h3>Reportes en tiempo real</h3><p>La comunidad actualiza si un lugar está lleno, cerró o hay cola. Siempre al día.</p></div>
+  </div>
+</section>
+
+<footer id="contacto">
+  <div class="ft">
+    <div><div class="fl">Shelter<b>Rain</b></div><p>Tu aliado en días de lluvia. Encuentra refugio donde estés.</p>
+    <div class="sc"><a href="#">🐦</a><a href="#">📸</a><a href="#">🎵</a></div></div>
+    <div class="fc"><h4>App</h4><ul><li><a href="#">Cómo funciona</a></li><li><a href="#">Agregar un lugar</a></li><li><a href="#">Descargar</a></li></ul></div>
+    <div class="fc"><h4>Contacto</h4><ul><li><a href="mailto:hola@shelterrain.app">hola@shelterrain.app</a></li><li><a href="#">Reportar un error</a></li><li><a href="#">Prensa</a></li></ul></div>
+  </div>
+  <div class="fb"><span>© 2025 ShelterRain. Hecho con ☔ y código.</span><span><a href="#">Privacidad</a> · <a href="#">Términos</a></span></div>
+</footer>
+
+<script>ham.onclick=()=>mob.classList.toggle('open')</script>
+
+</body>
+</html>
